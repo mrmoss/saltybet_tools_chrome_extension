@@ -41,23 +41,53 @@ function update()
 		xhr(player1,player2,function(data)
 		{
 			if(data&&data.fighters)
+			{
+				var p1_obj=null;
+				var p2_obj=null;
 				for(var ii=0;ii<data.fighters.length;++ii)
 				{
-					var text_value=' (W:'+data.fighters[ii].wins+'/L:'+data.fighters[ii].losses+')';
+					var text_value=' (W:'+data.fighters[ii].wins+'|L:'+data.fighters[ii].losses+
+						'|WR:'+data.fighters[ii].win_ratio+'%)';
 					var link_value='';
 					var url='https://salty.manly.parts/search/?fighter='+
 						encodeURIComponent('\''+data.fighters[ii].fighter+'\'');
 					if(data.fighters[ii].fighter==player1)
 					{
+						p1_obj=data.fighters[ii];
 						p1_text.nodeValue=text_value;
 						p1_link.href=url;
 					}
 					else if(data.fighters[ii].fighter==player2)
 					{
+						p2_obj=data.fighters[ii];
 						p2_text.nodeValue=text_value;
 						p2_link.href=url;
 					}
 				}
+
+				if(p1_obj&&p2_obj)
+				{
+					var found=false;
+					for(var key in p1_obj.matches)
+					{
+						if(p1_obj.matches[key].winner==p2_obj.fighter)
+						{
+							found=true;
+							console.log(p1_obj.fighter+' has lost '+p2_obj.fighter+' '+p1_obj.matches[key].count+' time(s)');
+							break;
+						}
+						else if(p1_obj.matches[key].loser==p2_obj.fighter)
+						{
+							found=true;
+							console.log(p1_obj.fighter+' has beaten '+p2_obj.fighter+' '+p1_obj.matches[key].count+' time(s)');
+							break;
+						}
+					}
+					if(!found)
+						console.log(p1_obj.fighter+' has never fought '+p2_obj.fighter);
+				}
+
+			}
 		});
 }
 function xhr(player1,player2,callback)

@@ -6,8 +6,10 @@
 	"manifest_version":2,
 	"permissions":
 	[
-		"http://www.saltybet.com/*",
-		"https://www.saltybet.com/*",
+		"http://mugen.saltybet.com/",
+		"https://mugen.saltybet.com/",
+		"http://www.saltybet.com/",
+		"https://www.saltybet.com/",
 		"https://salty.manly.parts/"
 	],
 	"content_scripts":
@@ -19,8 +21,10 @@
 			],
 			"matches":
 			[
-				"http://www.saltybet.com/*",
-				"https://www.saltybet.com/*"
+				"http://mugen.saltybet.com/",
+				"https://mugen.saltybet.com/",
+				"http://www.saltybet.com/",
+				"https://www.saltybet.com/"
 			],
 			"run_at":"document_end"
 		}
