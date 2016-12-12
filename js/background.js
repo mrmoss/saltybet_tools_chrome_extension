@@ -1,8 +1,10 @@
 var last_update={player1:null,player2:null};
 var p1_button=null;
 var p2_button=null;
+var mid_div=null;
 var p1_center=document.createElement('center');
 var p2_center=document.createElement('center');
+var mid_center=document.createElement('center');
 var p1_div=document.createElement('div');
 var p2_div=document.createElement('div');
 var p1_link=document.createElement('a');
@@ -11,18 +13,22 @@ p1_link.innerHTML='Link';
 p2_link.innerHTML='Link';
 var p1_text=document.createTextNode('');
 var p2_text=document.createTextNode('');
+var mid_text=document.createElement('div');
 init();
 function init()
 {
 	p1_button=document.getElementById('player1');
 	p2_button=document.getElementById('player2');
-	if(!p1_button||!p2_button)
+	mid_div=document.getElementById('balancewrapper');
+	if(!p1_button||!p2_button||!mid_div)
 	{
 		setTimeout(init,100);
 		return;
 	}
 	p1_button.parentNode.appendChild(document.createElement('br'));
 	p2_button.parentNode.appendChild(document.createElement('br'));
+	mid_div.appendChild(document.createElement('br'));
+	mid_div.appendChild(mid_text);
 	p1_button.parentNode.appendChild(p1_center);
 	p2_button.parentNode.appendChild(p2_center);
 	p1_center.appendChild(p1_div);
@@ -46,8 +52,8 @@ function update()
 				var p2_obj=null;
 				for(var ii=0;ii<data.fighters.length;++ii)
 				{
-					var text_value=' (W:'+data.fighters[ii].wins+'|L:'+data.fighters[ii].losses+
-						'|WR:'+data.fighters[ii].win_ratio+'%)';
+					var text_value=' (W: '+data.fighters[ii].wins+' | L: '+data.fighters[ii].losses+
+						' | WR: '+data.fighters[ii].win_ratio+'%)';
 					var link_value='';
 					var url='https://salty.manly.parts/search/?fighter='+
 						encodeURIComponent('\''+data.fighters[ii].fighter+'\'');
@@ -64,27 +70,37 @@ function update()
 						p2_link.href=url;
 					}
 				}
-
 				if(p1_obj&&p2_obj)
 				{
-					var found=false;
+					var count=null;
+					var message=' has never fought ';
 					for(var key in p1_obj.matches)
 					{
 						if(p1_obj.matches[key].winner==p2_obj.fighter)
 						{
-							found=true;
-							console.log(p1_obj.fighter+' has lost '+p2_obj.fighter+' '+p1_obj.matches[key].count+' time(s)');
+							message=' has lost to ';
+							count=p1_obj.matches[key].count;
 							break;
 						}
 						else if(p1_obj.matches[key].loser==p2_obj.fighter)
 						{
-							found=true;
-							console.log(p1_obj.fighter+' has beaten '+p2_obj.fighter+' '+p1_obj.matches[key].count+' time(s)');
+							message=' has defeated ';
+							count=p1_obj.matches[key].count;
 							break;
 						}
 					}
-					if(!found)
-						console.log(p1_obj.fighter+' has never fought '+p2_obj.fighter);
+					mid_text.innerHTML='';
+					var p1_span=document.createElement('span');
+					p1_span.className='redtext';
+					p1_span.appendChild(document.createTextNode(player1));
+					mid_text.appendChild(p1_span);
+					mid_text.appendChild(document.createTextNode(message));
+					var p2_span=document.createElement('span');
+					p2_span.className='bluetext';
+					p2_span.appendChild(document.createTextNode(player2));
+					mid_text.appendChild(p2_span);
+					if(count!=null)
+						mid_text.appendChild(document.createTextNode(' '+count+' times(s)'));
 				}
 
 			}
