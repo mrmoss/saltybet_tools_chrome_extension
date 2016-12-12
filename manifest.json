@@ -1,0 +1,33 @@
+{
+	"name":"Salty Finder",
+	"short_name":"Salty Finder",
+	"description":"Saltybet database viewer.",
+	"version":"2016.12.11.0",
+	"manifest_version":2,
+	"permissions":
+	[
+		"http://www.saltybet.com/*",
+		"https://www.saltybet.com/*",
+		"https://salty.manly.parts/"
+	],
+	"content_scripts":
+	[
+		{
+			"js":
+			[
+				"js/background.js"
+			],
+			"matches":
+			[
+				"http://www.saltybet.com/*",
+				"https://www.saltybet.com/*"
+			],
+			"run_at":"document_end"
+		}
+	],
+	"icons":
+	{
+		"16":"images/favicon-16x16.png",
+		"128":"images/favicon-32x32.png"
+	}
+}
