@@ -2,7 +2,7 @@
 	"name":"Salty Finder",
 	"short_name":"Salty Finder",
 	"description":"Saltybet database viewer.",
-	"version":"2016.12.12.1",
+	"version":"2016.12.12.2",
 	"manifest_version":2,
 	"permissions":
 	[
