@@ -94,20 +94,24 @@ function update()
 				{
 					var count=null;
 					var message=' has never fought ';
+					var p1_match=false;
+					var p2_match=false;
 					for(var key in p1_obj.matches)
 					{
-						if(p1_obj.matches[key].winner==p2_obj.fighter)
+						if(p1_obj.matches[key].winner==p2_obj.fighter&&!p1_match)
 						{
 							message=' has lost to ';
 							count=p1_obj.matches[key].count;
-							break;
+							p1_match=true;
 						}
-						else if(p1_obj.matches[key].loser==p2_obj.fighter)
+						if(p1_obj.matches[key].loser==p2_obj.fighter&&!p2_match)
 						{
 							message=' has defeated ';
 							count=p1_obj.matches[key].count;
-							break;
+							p2_match=true;
 						}
+						if(p1_match&&p2_match)
+							break;
 					}
 					mid_text.innerHTML='';
 					var p1_span=document.createElement('span');
