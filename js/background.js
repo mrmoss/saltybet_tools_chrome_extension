@@ -1,4 +1,5 @@
 var last_update={player1:null,player2:null};
+var tournament_note=null;
 var p1_button=null;
 var p2_button=null;
 var mid_div=null;
@@ -25,12 +26,24 @@ function init()
 		setTimeout(init,100);
 		return;
 	}
-	p1_div.style.marginTop='-12px';
-	p2_div.style.marginTop='-12px';
-	mid_text.style.marginBottom='-24px';
-	p1_button.parentNode.appendChild(document.createElement('br'));
-	p2_button.parentNode.appendChild(document.createElement('br'));
-	mid_div.appendChild(document.createElement('br'));
+	var bet_table=document.getElementById('bet-table');
+	if(bet_table)
+		bet_table.marginTop='-24px';
+	var score_div=document.getElementsByClassName('center-hud tablecell');
+	if(score_div.length>0)
+	{
+		score_div=score_div[0];
+		if(score_div.childNodes.length>1)
+		{
+			score_div=score_div.childNodes[1];
+			score_div.style.marginTop='-24px';
+		}
+	}
+	p1_div.style.marginTop='6px';
+	p2_div.style.marginTop='6px';
+	mid_text.style.marginBottom='4px';
+	p1_button.style.marginTop='-24px';
+	p2_button.style.marginTop='-24px';
 	mid_div.appendChild(mid_text);
 	p1_button.parentNode.appendChild(p1_center);
 	p2_button.parentNode.appendChild(p2_center);
@@ -41,9 +54,13 @@ function init()
 	p1_div.appendChild(p1_text);
 	p2_div.appendChild(p2_text);
 	setInterval(update,1000);
+	update();
 }
 function update()
 {
+	var tournament_note=document.getElementById('tournament-note');
+	if(tournament_note)
+		tournament_note.parentNode.removeChild(tournament_note);
 	var player1=p1_button.value;
 	var player2=p2_button.value;
 	if(player1!=last_update.player1||player2!=last_update.player2)
