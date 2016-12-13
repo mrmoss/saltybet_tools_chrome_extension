@@ -25,6 +25,9 @@ function init()
 		setTimeout(init,100);
 		return;
 	}
+	p1_div.style.marginTop='-12px';
+	p2_div.style.marginTop='-12px';
+	mid_text.style.marginBottom='-24px';
 	p1_button.parentNode.appendChild(document.createElement('br'));
 	p2_button.parentNode.appendChild(document.createElement('br'));
 	mid_div.appendChild(document.createElement('br'));
