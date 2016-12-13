@@ -92,15 +92,17 @@ function update()
 					mid_text.innerHTML='';
 					var p1_span=document.createElement('span');
 					p1_span.className='redtext';
-					p1_span.appendChild(document.createTextNode(player1));
+					p1_span.appendChild(document.createTextNode('\''+player1+'\''));
 					mid_text.appendChild(p1_span);
 					mid_text.appendChild(document.createTextNode(message));
 					var p2_span=document.createElement('span');
 					p2_span.className='bluetext';
-					p2_span.appendChild(document.createTextNode(player2));
+					p2_span.appendChild(document.createTextNode('\''+player2+'\''));
 					mid_text.appendChild(p2_span);
 					if(count!=null)
-						mid_text.appendChild(document.createTextNode(' '+count+' times(s)'));
+						mid_text.appendChild(document.createTextNode(' '+count+' times(s) in the past'));
+					else
+						mid_text.appendChild(document.createTextNode(' in the past'));
 				}
 
 			}
