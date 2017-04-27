@@ -53,7 +53,7 @@ function init()
 	p2_div.appendChild(p2_link);
 	p1_div.appendChild(p1_text);
 	p2_div.appendChild(p2_text);
-	setInterval(update,1000);
+	setInterval(update,5000);
 	update();
 }
 function update()
