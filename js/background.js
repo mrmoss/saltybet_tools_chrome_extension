@@ -53,7 +53,7 @@ function init()
 	p2_div.appendChild(p2_link);
 	p1_div.appendChild(p1_text);
 	p2_div.appendChild(p2_text);
-	setInterval(update,5000);
+	setInterval(update,3000);
 	update();
 }
 function update()
@@ -148,6 +148,7 @@ function xhr(player1,player2,callback)
 				callback(JSON.parse(xhr.responseText));
 		}
 		xhr.open('POST','https://salty.manly.parts/',true);
+		xhr.setRequestHeader('Content-type','application/json');
 		xhr.send(JSON.stringify(req));
 	}
 }
