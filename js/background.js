@@ -127,6 +127,8 @@ function update()
 						mid_text.appendChild(document.createTextNode(' '+count+' times(s) in the past'));
 					else
 						mid_text.appendChild(document.createTextNode(' in the past'));
+					last_update.player1 = player1;
+					last_update.player2 = player2;
 				}
 
 			}
