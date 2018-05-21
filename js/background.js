@@ -59,8 +59,6 @@ function init()
 function update()
 {
 	var tournament_note=document.getElementById('tournament-note');
-	if(tournament_note)
-		tournament_note.parentNode.removeChild(tournament_note);
 	var player1=p1_button.value;
 	var player2=p2_button.value;
 	if(player1!=last_update.player1||player2!=last_update.player2)
