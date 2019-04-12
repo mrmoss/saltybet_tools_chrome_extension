@@ -2,7 +2,7 @@
 	"name":"Salty Finder",
 	"short_name":"Salty Finder",
 	"description":"Saltybet database viewer.",
-	"version":"2018.5.21.0",
+	"version":"2019.4.11.0",
 	"manifest_version":2,
 	"permissions":
 	[
@@ -10,7 +10,7 @@
 		"https://mugen.saltybet.com/",
 		"http://www.saltybet.com/",
 		"https://www.saltybet.com/",
-		"https://salty.manly.parts/"
+		"https://salty.imaprettykitty.com/"
 	],
 	"content_scripts":
 	[

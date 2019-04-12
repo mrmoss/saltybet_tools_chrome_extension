@@ -73,7 +73,7 @@ function update()
 					var text_value=' (W: '+data.fighters[ii].wins+' | L: '+data.fighters[ii].losses+
 						' | WR: '+data.fighters[ii].win_ratio+'%)';
 					var link_value='';
-					var url='https://salty.manly.parts/search/?fighter='+
+					var url='https://salty.imaprettykitty.com/search/?fighter='+
 						encodeURIComponent('\''+data.fighters[ii].fighter+'\'');
 					if(data.fighters[ii].fighter==player1)
 					{
@@ -147,7 +147,7 @@ function xhr(player1,player2,callback)
 			if(this.readyState==4&&this.status==200)
 				callback(JSON.parse(xhr.responseText));
 		}
-		xhr.open('POST','https://salty.manly.parts/',true);
+		xhr.open('POST','https://salty.imaprettykitty.com/',true);
 		xhr.setRequestHeader('Content-type','application/json');
 		xhr.send(JSON.stringify(req));
 	}
