@@ -53,16 +53,22 @@ function init()
 	p2_div.appendChild(p2_link);
 	p1_div.appendChild(p1_text);
 	p2_div.appendChild(p2_text);
-	setInterval(update,3000);
 	update();
 }
 function update()
 {
+	p1_button=document.getElementById('player1');
+	p2_button=document.getElementById('player2');
 	var tournament_note=document.getElementById('tournament-note');
 	var player1=p1_button.value;
 	var player2=p2_button.value;
+	if(player1.length==0||player2.length==0)
+	{
+		setTimeout(update,100);
+		return;
+	}
 	if(player1!=last_update.player1||player2!=last_update.player2)
-		xhr(player1,player2,function(data)
+		xhr_proxy(player1,player2,function(data)
 		{
 			if(data&&data.fighters)
 			{
@@ -130,25 +136,23 @@ function update()
 				}
 
 			}
+			setTimeout(update,100);
+		},
+		function(error)
+		{
+			setTimeout(update,100);
 		});
 }
-function xhr(player1,player2,callback)
+function xhr_proxy(player1,player2,success_callback,error_callback)
 {
-	var req={fighters:[]};
-	if(player1)
-		req.fighters.push('\''+player1+'\'');
-	if(player2)
-		req.fighters.push('\''+player2+'\'');
-	if(req.fighters.length>0)
+	chrome.runtime.sendMessage({player1:player1,player2:player2},function(response)
 	{
-		var xhr=new XMLHttpRequest();
-		xhr.onreadystatechange=function()
+		if(response)
 		{
-			if(this.readyState==4&&this.status==200)
-				callback(JSON.parse(xhr.responseText));
+			if(response.error)
+				error_callback(response.error);
+			else if(response.success)
+				success_callback(response.success);
 		}
-		xhr.open('POST','https://salty.imaprettykitty.com/',true);
-		xhr.setRequestHeader('Content-type','application/json');
-		xhr.send(JSON.stringify(req));
-	}
+	});
 }
