@@ -67,81 +67,84 @@ function update()
 		setTimeout(update,100);
 		return;
 	}
-	if(player1!=last_update.player1||player2!=last_update.player2)
-		xhr_proxy(player1,player2,function(data)
+	if(player1==last_update.player1&&player2==last_update.player2)
+	{
+		setTimeout(update,100);
+		return;
+	}
+	xhr_proxy(player1,player2,function(data)
+	{
+		setTimeout(update,1000);
+		if(data&&data.fighters)
 		{
-			if(data&&data.fighters)
+			var p1_obj=null;
+			var p2_obj=null;
+			for(var ii=0;ii<data.fighters.length;++ii)
 			{
-				var p1_obj=null;
-				var p2_obj=null;
-				for(var ii=0;ii<data.fighters.length;++ii)
+				var text_value=' (W: '+data.fighters[ii].wins+' | L: '+data.fighters[ii].losses+
+					' | WR: '+data.fighters[ii].win_ratio+'%)';
+				var link_value='';
+				var url='https://salty.imaprettykitty.com/search/?fighter='+
+					encodeURIComponent('\''+data.fighters[ii].fighter+'\'');
+				if(data.fighters[ii].fighter==player1)
 				{
-					var text_value=' (W: '+data.fighters[ii].wins+' | L: '+data.fighters[ii].losses+
-						' | WR: '+data.fighters[ii].win_ratio+'%)';
-					var link_value='';
-					var url='https://salty.imaprettykitty.com/search/?fighter='+
-						encodeURIComponent('\''+data.fighters[ii].fighter+'\'');
-					if(data.fighters[ii].fighter==player1)
-					{
-						p1_obj=data.fighters[ii];
-						p1_text.nodeValue=text_value;
-						p1_link.href=url;
-					}
-					else if(data.fighters[ii].fighter==player2)
-					{
-						p2_obj=data.fighters[ii];
-						p2_text.nodeValue=text_value;
-						p2_link.href=url;
-					}
+					p1_obj=data.fighters[ii];
+					p1_text.nodeValue=text_value;
+					p1_link.href=url;
 				}
-				if(p1_obj&&p2_obj)
+				else if(data.fighters[ii].fighter==player2)
 				{
-					var count=null;
-					var message=' has never fought ';
-					var p1_match=false;
-					var p2_match=false;
-					for(var key in p1_obj.matches)
-					{
-						if(p1_obj.matches[key].winner==p2_obj.fighter&&!p1_match)
-						{
-							message=' has lost to ';
-							count=p1_obj.matches[key].count;
-							p1_match=true;
-						}
-						if(p1_obj.matches[key].loser==p2_obj.fighter&&!p2_match)
-						{
-							message=' has defeated ';
-							count=p1_obj.matches[key].count;
-							p2_match=true;
-						}
-						if(p1_match&&p2_match)
-							break;
-					}
-					mid_text.innerHTML='';
-					var p1_span=document.createElement('span');
-					p1_span.className='redtext';
-					p1_span.appendChild(document.createTextNode('\''+player1+'\''));
-					mid_text.appendChild(p1_span);
-					mid_text.appendChild(document.createTextNode(message));
-					var p2_span=document.createElement('span');
-					p2_span.className='bluetext';
-					p2_span.appendChild(document.createTextNode('\''+player2+'\''));
-					mid_text.appendChild(p2_span);
-					if(count!=null)
-						mid_text.appendChild(document.createTextNode(' '+count+' times(s) in the past'));
-					else
-						mid_text.appendChild(document.createTextNode(' in the past'));
-					last_update.player1 = player1;
-					last_update.player2 = player2;
+					p2_obj=data.fighters[ii];
+					p2_text.nodeValue=text_value;
+					p2_link.href=url;
 				}
-
 			}
-			setTimeout(update,100);
-		},
-		function(error)
-		{
-			setTimeout(update,100);
-		});
+			if(p1_obj&&p2_obj)
+			{
+				var count=null;
+				var message=' has never fought ';
+				var p1_match=false;
+				var p2_match=false;
+				for(var key in p1_obj.matches)
+				{
+					if(p1_obj.matches[key].winner==p2_obj.fighter&&!p1_match)
+					{
+						message=' has lost to ';
+						count=p1_obj.matches[key].count;
+						p1_match=true;
+					}
+					if(p1_obj.matches[key].loser==p2_obj.fighter&&!p2_match)
+					{
+						message=' has defeated ';
+						count=p1_obj.matches[key].count;
+						p2_match=true;
+					}
+					if(p1_match&&p2_match)
+						break;
+				}
+				mid_text.innerHTML='';
+				var p1_span=document.createElement('span');
+				p1_span.className='redtext';
+				p1_span.appendChild(document.createTextNode('\''+player1+'\''));
+				mid_text.appendChild(p1_span);
+				mid_text.appendChild(document.createTextNode(message));
+				var p2_span=document.createElement('span');
+				p2_span.className='bluetext';
+				p2_span.appendChild(document.createTextNode('\''+player2+'\''));
+				mid_text.appendChild(p2_span);
+				if(count!=null)
+					mid_text.appendChild(document.createTextNode(' '+count+' times(s) in the past'));
+				else
+					mid_text.appendChild(document.createTextNode(' in the past'));
+				last_update.player1 = player1;
+				last_update.player2 = player2;
+			}
+		}
+	},
+	function(error)
+	{
+		setTimeout(update,1000);
+	});
 }
 function xhr_proxy(player1,player2,success_callback,error_callback)
 {
@@ -153,6 +156,12 @@ function xhr_proxy(player1,player2,success_callback,error_callback)
 				error_callback(response.error);
 			else if(response.success)
 				success_callback(response.success);
+			else
+				error_callback('Garbled response');
+		}
+		else
+		{
+			error_callback('Empty response');
 		}
 	});
 }
